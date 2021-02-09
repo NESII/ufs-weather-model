@@ -34,10 +34,10 @@
   path = CICE-interface/CICE
   url = https://github.com/NOAA-EMC/CICE
   branch = emc/develop
-[submodule "NWM"]
-  path = NWM
+[submodule "WRFHYDRO"]
+  path = WRFHYDRO
   url = https://github.com/NESII/wrf_hydro_nwm_public.git
-  branch = feature/RRFS_NWM_dev
+  branch = v5.2.x
 [submodule "DATM"]
   path = DATM
   url = https://github.com/NOAA-EMC/NEMSdatm

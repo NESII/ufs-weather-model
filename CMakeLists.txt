@@ -30,6 +30,7 @@ set(PARALLEL_NETCDF OFF CACHE BOOL "Enable parallel NetCDF")
 set(QUAD_PRECISION  ON  CACHE BOOL "Enable QUAD_PRECISION (for certain grid metric terms in dycore)")
 set(REPRO           OFF CACHE BOOL "Enable REPRO mode")
 set(WW3             OFF CACHE BOOL "Enable WW3")
+set(WRFHYDRO        OFF CACHE BOOL "Enable WRFHYDRO")
 set(S2S             OFF CACHE BOOL "Enable S2S")
 set(JEDI_DRIVER     OFF CACHE BOOL "Enable JEDI as top level driver")
 set(DATM            OFF CACHE BOOL "Enable Data Atmosphere")
@@ -66,6 +67,8 @@ message("PARALLEL_NETCDF .. ${PARALLEL_NETCDF}")
 message("QUAD_PRECISION ... ${QUAD_PRECISION}")
 message("REPRO ............ ${REPRO}")
 message("WW3 .............. ${WW3}")
+message("WRFHYDRO ......... ${WRFHYDRO}")
+
 message("S2S .............. ${S2S}")
 message("DATM ............. ${DATM}")
 message("")
@@ -218,6 +221,37 @@ if(WW3)
     COMMAND ${CMAKE_BUILD_TOOL} WW3_PARCOMPN=4 WW3_COMP=${WW3_COMP} ww3_nemslibonly > ${CMAKE_CURRENT_BINARY_DIR}/ww3_make.log 2>&1)
 
     set(WW3_LIBS ${CMAKE_CURRENT_SOURCE_DIR}/WW3/model/obj/libww3_multi_esmf.a)
+endif()
+
+###############################################################################
+### WRFHYDRO
+###############################################################################
+if(WRFHYDRO)
+  # Location
+  set(WRFHYDRO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/WRFHYDRO/trunk/NDHMS)
+  # Default Settings
+  set(WRF_HYDRO 1)
+  if (DEBUG)
+    set(HYDRO_D 1)
+  else()
+    set(HYDRO_D 0)
+  endif()
+  set(WRF_HYDRO_RAPID 0)
+  set(SPATIAL_SOIL 0)
+  set(WRFIO_NCD_LARGE_FILE_SUPPORT 1)
+  set(NCEP_WCOSS 0)
+  if (NWM)
+    set(NWM_META 1)
+    set(WRF_HYDRO_NUDGING 1)
+  else()
+    set(NWM_META 0)
+    set(WRF_HYDRO_NUDGING 0)
+  endif()
+  set(OUTPUT_CHAN_CONN 0)
+  set(PRECIP_DOUBLE 0)
+  set(HYDRO_LSM NoahMP)
+  # Add
+  add_subdirectory(${WRFHYDRO_DIR} EXCLUDE_FROM_ALL)
 endif()
 
 ###############################################################################
